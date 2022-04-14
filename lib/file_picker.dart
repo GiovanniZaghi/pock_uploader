@@ -10,8 +10,6 @@ class FilePickerDemo extends StatefulWidget {
 class _FilePickerDemoState extends State<FilePickerDemo> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-  String? _fileName;
-  String? _saveAsFileName;
   List<PlatformFile>? _paths;
   String? _directoryPath;
   String? _extension;
@@ -170,18 +168,26 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
         ),
         insetPadding: const EdgeInsets.all(8),
         actions: <Widget>[
-          TextButton(
-              onPressed: () {
-                _clearCachedFiles();
-                Navigator.pop(context);
-              },
-              child: const Text('Fechar')),
-          TextButton(
+          OutlinedButton(
+            onPressed: () {
+              _resetState();
+              _clearCachedFiles();
+              Navigator.pop(context);
+            },
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Text('Cancelar'),
+            ),
+          ),
+          ElevatedButton(
             onPressed: () {
               _pickFiles();
             },
-            child: const Text('Selecionar arquivos'),
-          )
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: const Text('Selecionar'),
+            ),
+          ),
         ],
       ),
     ).then((_) => {
@@ -206,9 +212,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
     setState(() {
       _isLoading = true;
       _directoryPath = null;
-      _fileName = null;
       _paths = null;
-      _saveAsFileName = null;
       _userAborted = false;
     });
   }
